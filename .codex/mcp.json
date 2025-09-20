@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "indesign-mcp-server": {
+      "command": "node",
+      "args": ["src/index.js"],
+      "cwd": "${workspaceFolder}/indesign-mcp-server",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    },
+    "mcphub": {
+      "url": "http://localhost:3000/mcp/bde16b24-893b-41e7-a718-1e94f4ee93dc",
+      "headers": {
+        "Authorization": "Bearer <your-access-token>"
+      }
+    }
+  }
+}

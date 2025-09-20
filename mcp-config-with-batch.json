@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "indesign-mcp-server": {
+      "command": "F:/MCP/indesign mcp/start-indesign-mcp.bat",
+      "args": [],
+      "env": {}
+    }
+  }
+}
