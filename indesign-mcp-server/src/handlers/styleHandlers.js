@@ -23,6 +23,12 @@ export class StyleHandlers {
 
         const escapedName = escapeJsxString(name);
         const escapedFontFamily = escapeJsxString(fontFamily);
+        const sanitizedTextColor = typeof textColor === 'string' && textColor.trim() !== '' ? textColor.trim() : 'Black';
+        const escapedTextColor = escapeJsxString(sanitizedTextColor);
+        const alignmentOptions = new Set(['LEFT_ALIGN', 'CENTER_ALIGN', 'RIGHT_ALIGN', 'JUSTIFY', 'FULLY_JUSTIFIED']);
+        const normalizedAlignment = typeof alignment === 'string' ? alignment.trim().toUpperCase() : 'LEFT_ALIGN';
+        const safeAlignment = alignmentOptions.has(normalizedAlignment) ? normalizedAlignment : 'LEFT_ALIGN';
+        const escapedAlignment = escapeJsxString(safeAlignment);
 
         const script = [
             'if (app.documents.length === 0) {',
@@ -43,9 +49,9 @@ export class StyleHandlers {
             `    style.pointSize = ${fontSize};`,
             '',
             '    // Apply color',
-            `    if ("${textColor}" !== "Black") {`,
+            `    if ("${escapedTextColor}" !== "Black") {`,
             '      try {',
-            `        var color = doc.colors.itemByName("${textColor}");`,
+            `        var color = doc.colors.itemByName("${escapedTextColor}");`,
             '        if (color.isValid) {',
             '          style.fillColor = color;',
             '        }',
@@ -55,11 +61,11 @@ export class StyleHandlers {
             '    }',
             '',
             '    // Apply alignment',
-            `    if ("${alignment}" === "CENTER_ALIGN") {`,
+            `    if ("${escapedAlignment}" === "CENTER_ALIGN") {`,
             '      style.justification = Justification.CENTER_ALIGN;',
-            `    } else if ("${alignment}" === "RIGHT_ALIGN") {`,
+            `    } else if ("${escapedAlignment}" === "RIGHT_ALIGN") {`,
             '      style.justification = Justification.RIGHT_ALIGN;',
-            `    } else if ("${alignment}" === "JUSTIFY") {`,
+            `    } else if ("${escapedAlignment}" === "JUSTIFY" || "${escapedAlignment}" === "FULLY_JUSTIFIED") {`,
             '      style.justification = Justification.FULLY_JUSTIFIED;',
             '    } else {',
             '      style.justification = Justification.LEFT_ALIGN;',
@@ -101,6 +107,8 @@ export class StyleHandlers {
 
         const escapedName = escapeJsxString(name);
         const escapedFontFamily = escapeJsxString(fontFamily);
+        const sanitizedTextColor = typeof textColor === 'string' && textColor.trim() !== '' ? textColor.trim() : 'Black';
+        const escapedTextColor = escapeJsxString(sanitizedTextColor);
 
         const script = [
             'if (app.documents.length === 0) {',
@@ -121,9 +129,9 @@ export class StyleHandlers {
             `    style.pointSize = ${fontSize};`,
             '',
             '    // Apply color',
-            `    if ("${textColor}" !== "Black") {`,
+            `    if ("${escapedTextColor}" !== "Black") {`,
             '      try {',
-            `        var color = doc.colors.itemByName("${textColor}");`,
+            `        var color = doc.colors.itemByName("${escapedTextColor}");`,
             '        if (color.isValid) {',
             '          style.fillColor = color;',
             '        }',
@@ -241,6 +249,10 @@ export class StyleHandlers {
      */
     static async listStyles(args) {
         const { styleType = 'ALL' } = args;
+        const allowedStyleTypes = new Set(['PARAGRAPH', 'CHARACTER', 'ALL']);
+        const normalizedStyleType = typeof styleType === 'string' ? styleType.trim().toUpperCase() : 'ALL';
+        const safeStyleType = allowedStyleTypes.has(normalizedStyleType) ? normalizedStyleType : 'ALL';
+        const escapedStyleType = escapeJsxString(safeStyleType);
 
         const script = [
             'if (app.documents.length === 0) {',
@@ -258,7 +270,7 @@ export class StyleHandlers {
             '    return "UNKNOWN (" + alignment + ")";',
             '  }',
             '',
-            `  if ("${styleType}" === "PARAGRAPH" || "${styleType}" === "ALL") {`,
+            `  if ("${escapedStyleType}" === "PARAGRAPH" || "${escapedStyleType}" === "ALL") {`,
             '    info += "\\n=== PARAGRAPH STYLES ===\\n";',
             '    for (var i = 0; i < doc.paragraphStyles.length; i++) {',
             '      var style = doc.paragraphStyles[i];',
@@ -279,7 +291,7 @@ export class StyleHandlers {
             '    }',
             '  }',
             '',
-            `  if ("${styleType}" === "CHARACTER" || "${styleType}" === "ALL") {`,
+            `  if ("${escapedStyleType}" === "CHARACTER" || "${escapedStyleType}" === "ALL") {`,
             '    info += "\\n=== CHARACTER STYLES ===\\n";',
             '    for (var i = 0; i < doc.characterStyles.length; i++) {',
             '      var style = doc.characterStyles[i];',

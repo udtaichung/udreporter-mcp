@@ -1,7 +1,7 @@
 /**
  * Core script execution functionality (macOS AppleScript + Windows COM)
  */
-import { execSync } from 'child_process';
+import { execFileSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
@@ -26,7 +26,7 @@ export class ScriptExecutor {
      */
     static async executeAppleScript(script) {
         try {
-            const result = execSync(`osascript -e '${script}'`, { encoding: 'utf8' });
+            const result = execFileSync('osascript', ['-e', script], { encoding: 'utf8' });
             return result.trim();
         } catch (error) {
             throw new Error(`AppleScript execution failed: ${error.message}`);
@@ -107,8 +107,12 @@ export class ScriptExecutor {
             return await this._executeInDesignScriptWindows(script);
         }
         // macOS path (AppleScript + temp JSX file)
+        let tempDir;
+        let tempScriptPath;
         try {
-            const tempScriptPath = path.join(__dirname, '../../temp_script.jsx');
+            tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'indesign-mcp-'));
+            tempScriptPath = path.join(tempDir, 'script.jsx');
+
             // Force non-interactive (headless) execution where possible
             const wrapped = [
                 'try {',
@@ -118,22 +122,24 @@ export class ScriptExecutor {
                 '  "Error: " + e.message;',
                 '}'
             ].join('\n');
-            fs.writeFileSync(tempScriptPath, wrapped);
+            fs.writeFileSync(tempScriptPath, wrapped, { encoding: 'utf8' });
 
+            const escapedScriptPath = tempScriptPath.replace(/"/g, '\\"');
             const appleScript = `
         tell application "Adobe InDesign 2025"
-          do script POSIX file "${tempScriptPath}" language javascript
+          do script POSIX file "${escapedScriptPath}" language javascript
         end tell
       `;
 
             const result = await this.executeAppleScript(appleScript);
 
-            // Clean up temporary file (best-effort)
-            try { fs.unlinkSync(tempScriptPath); } catch {}
-
             return result;
         } catch (error) {
             throw new Error(`Error executing tool (macOS): ${error.message}`);
+        } finally {
+            if (tempDir) {
+                try { fs.rmSync(tempDir, { recursive: true, force: true }); } catch {}
+            }
         }
     }
 

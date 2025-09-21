@@ -2,6 +2,29 @@
  * Enhanced Session management for InDesign MCP Server
  * Stores page dimensions and other session-specific data with improved validation and error handling
  */
+if (typeof globalThis.CustomEvent !== 'function') {
+    const BaseEvent = typeof globalThis.Event === 'function' ? globalThis.Event : null;
+    if (BaseEvent) {
+        class NodeCustomEvent extends BaseEvent {
+            constructor(type, params = {}) {
+                super(type, params);
+                this.detail = params?.detail ?? null;
+            }
+        }
+        globalThis.CustomEvent = NodeCustomEvent;
+    } else {
+        class MinimalCustomEvent {
+            constructor(type, params = {}) {
+                this.type = type;
+                this.detail = params?.detail ?? null;
+                this.bubbles = Boolean(params?.bubbles);
+                this.cancelable = Boolean(params?.cancelable);
+            }
+        }
+        globalThis.CustomEvent = MinimalCustomEvent;
+    }
+}
+
 export class SessionManager extends EventTarget {
     constructor(config = {}) {
         super();

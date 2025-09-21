@@ -11,12 +11,16 @@ export class ExportHandlers {
     static async exportPDF(args) {
         // Support both schema variants: {filePath, preset} or {filePath, quality, pages, includeBleed, includeMarks}
         const filePath = args.filePath;
-        const pages = args.pages || args.pageRange || 'all';
+        const rawPageRange = args.pages ?? args.pageRange ?? 'all';
+        const pageRangeString = typeof rawPageRange === 'string' ? rawPageRange : String(rawPageRange ?? 'all');
+        const normalizedPageRange = pageRangeString.trim() === '' ? 'all' : pageRangeString.trim();
         const quality = args.quality || null; // PRESS/PRINT/SCREEN/DIGITAL
-        const preset = args.preset || (quality === 'PRESS' ? 'Press Quality' : quality === 'PRINT' ? 'High Quality Print' : 'Smallest File Size');
+        const presetCandidate = args.preset || (quality === 'PRESS' ? 'Press Quality' : quality === 'PRINT' ? 'High Quality Print' : 'Smallest File Size');
+        const preset = typeof presetCandidate === 'string' && presetCandidate.trim() !== '' ? presetCandidate : 'High Quality Print';
 
         const escapedFilePath = escapeFilePathForJsx(filePath);
         const escapedPreset = escapeJsxString(preset);
+        const escapedPageRange = escapeJsxString(normalizedPageRange);
 
         const script = [
             'if (app.documents.length === 0) {',
@@ -33,7 +37,7 @@ export class ExportHandlers {
             '    }',
             '',
             '    // Page range preference (best-effort)',
-            `    try { app.pdfExportPreferences.pageRange = "${pages}"; } catch(e) {}`,
+            `    try { app.pdfExportPreferences.pageRange = "${escapedPageRange}"; } catch(e) {}`,
             '    // Export to PDF with preset',
             '    doc.exportFile(ExportFormat.PDF_TYPE, pdfFile, false, "' + escapedPreset + '");',
             '',
@@ -57,9 +61,17 @@ export class ExportHandlers {
         const format = args.format || 'JPEG';
         const quality = args.quality ?? 80;
         const resolution = args.resolution ?? 300;
-        const pageRange = args.pageRange || args.pages || 'all';
+        const rawPageRange = args.pageRange ?? args.pages ?? 'all';
+        const pageRangeString = typeof rawPageRange === 'string' ? rawPageRange : String(rawPageRange ?? 'all');
+        const trimmedRange = pageRangeString.trim();
+        const canonicalPageRange = trimmedRange === '' ? 'all' : (trimmedRange.toLowerCase() === 'all' ? 'all' : trimmedRange);
 
         const escapedFolderPath = escapeFilePathForJsx(folderPath);
+        const escapedPageRange = escapeJsxString(canonicalPageRange);
+        const normalizedFormat = typeof format === 'string' ? format.trim().toUpperCase() : 'JPEG';
+        const supportedFormats = new Set(['JPEG']);
+        const safeFormat = supportedFormats.has(normalizedFormat) ? normalizedFormat : 'JPEG';
+        const escapedFormat = escapeJsxString(safeFormat);
 
         const script = [
             'if (app.documents.length === 0) {',
@@ -75,8 +87,8 @@ export class ExportHandlers {
             '',
             '    var exportedCount = 0;',
             '    var pagesToExport = [];',
-            `    if ("${pageRange}" !== "all") {`,
-            '      var parts = "' + pageRange + '".split(",");',
+            `    if ("${escapedPageRange}" !== "all") {`,
+            `      var parts = "${escapedPageRange}".split(",");`,
             '      for (var i=0; i<parts.length; i++) {',
             '        var seg = parts[i];',
             '        if (seg.indexOf("-") >= 0) {',
@@ -94,8 +106,7 @@ export class ExportHandlers {
             '    }',
             '',
             '    // Configure JPEG export preferences',
-            '    var fmt = ("' + format + '" || "JPEG").toUpperCase();',
-            '    if (fmt !== "JPEG") fmt = "JPEG"; // Fallback to JPEG for now',
+            `    var fmt = "${escapedFormat}";`,
             '    app.jpegExportPreferences.exportResolution = ' + resolution + ';',
             '    // Map quality 0-100 to enum',
             '    var q = ' + quality + ';',
