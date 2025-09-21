@@ -44,6 +44,12 @@ export class TextHandlers {
         const escapedFontName = escapeJsxString(fontName);
         const escapedParagraphStyle = paragraphStyle ? escapeJsxString(paragraphStyle) : '';
         const escapedCharacterStyle = characterStyle ? escapeJsxString(characterStyle) : '';
+        const sanitizedTextColor = typeof textColor === 'string' && textColor.trim() !== '' ? textColor : 'Black';
+        const escapedTextColor = escapeJsxString(sanitizedTextColor);
+        const alignmentOptions = new Set(['LEFT', 'CENTER', 'RIGHT', 'JUSTIFY']);
+        const normalizedAlignment = typeof alignment === 'string' ? alignment.trim().toUpperCase() : 'LEFT';
+        const safeAlignment = alignmentOptions.has(normalizedAlignment) ? normalizedAlignment : 'LEFT';
+        const escapedAlignment = escapeJsxString(safeAlignment);
 
         const script = [
             'if (app.documents.length === 0) {',
@@ -102,20 +108,20 @@ export class TextHandlers {
             `      textFrame.texts[0].pointSize = ${fontSize};`,
             '',
             '      // Apply color',
-            `      if ("${textColor}" !== "Black") {`,
+            `      if ("${escapedTextColor}" !== "Black") {`,
             '        try {',
-            `          textFrame.texts[0].fillColor = app.colors.itemByName("${textColor}");`,
+            `          textFrame.texts[0].fillColor = app.colors.itemByName("${escapedTextColor}");`,
             '        } catch (colorError) {',
             '          // Use default color if specified color not found',
             '        }',
             '      }',
             '',
             '      // Apply alignment',
-            `      if ("${alignment}" === "CENTER") {`,
+            `      if ("${escapedAlignment}" === "CENTER") {`,
             '        textFrame.texts[0].justification = Justification.CENTER_ALIGN;',
-            `      } else if ("${alignment}" === "RIGHT") {`,
+            `      } else if ("${escapedAlignment}" === "RIGHT") {`,
             '        textFrame.texts[0].justification = Justification.RIGHT_ALIGN;',
-            `      } else if ("${alignment}" === "JUSTIFY") {`,
+            `      } else if ("${escapedAlignment}" === "JUSTIFY") {`,
             '        textFrame.texts[0].justification = Justification.FULLY_JUSTIFIED;',
             '      } else {',
             '        textFrame.texts[0].justification = Justification.LEFT_ALIGN;',
@@ -143,7 +149,9 @@ export class TextHandlers {
                 fontSize: fontSize,
                 fontName: fontName,
                 paragraphStyle: paragraphStyle,
-                characterStyle: characterStyle
+                characterStyle: characterStyle,
+                textColor: sanitizedTextColor,
+                alignment: safeAlignment
             });
         }
 
@@ -167,6 +175,11 @@ export class TextHandlers {
 
         const escapedContent = content ? escapeJsxString(content) : '';
         const escapedFontName = fontName ? escapeJsxString(fontName) : '';
+        const sanitizedTextColor = typeof textColor === 'string' ? textColor.trim() : '';
+        const escapedTextColor = sanitizedTextColor ? escapeJsxString(sanitizedTextColor) : '';
+        const normalizedAlignment = typeof alignment === 'string' ? alignment.trim().toUpperCase() : '';
+        const safeAlignment = ['LEFT', 'CENTER', 'RIGHT', 'JUSTIFY'].includes(normalizedAlignment) ? normalizedAlignment : '';
+        const escapedAlignment = safeAlignment ? escapeJsxString(safeAlignment) : '';
 
         const script = [
             'if (app.documents.length === 0) {',
@@ -193,20 +206,20 @@ export class TextHandlers {
             `        textFrame.texts[0].appliedFont = app.fonts.itemByName("${escapedFontName}");`,
             '      }',
             '',
-            `      if ("${textColor}" !== "") {`,
+            `      if ("${escapedTextColor}" !== "") {`,
             '      try {',
-            `        textFrame.texts[0].fillColor = app.colors.itemByName("${textColor}");`,
+            `        textFrame.texts[0].fillColor = app.colors.itemByName("${escapedTextColor}");`,
             '      } catch (colorError) {',
             '        // Use default color if specified color not found',
             '      }',
             '      }',
             '',
-            `      if ("${alignment}" !== "") {`,
-            `        if ("${alignment}" === "CENTER") {`,
+            `      if ("${escapedAlignment}" !== "") {`,
+            `        if ("${escapedAlignment}" === "CENTER") {`,
             '          textFrame.texts[0].justification = Justification.CENTER_ALIGN;',
-            `        } else if ("${alignment}" === "RIGHT") {`,
+            `        } else if ("${escapedAlignment}" === "RIGHT") {`,
             '          textFrame.texts[0].justification = Justification.RIGHT_ALIGN;',
-            `        } else if ("${alignment}" === "JUSTIFY") {`,
+            `        } else if ("${escapedAlignment}" === "JUSTIFY") {`,
             '          textFrame.texts[0].justification = Justification.FULLY_JUSTIFIED;',
             '        } else {',
             '          textFrame.texts[0].justification = Justification.LEFT_ALIGN;',

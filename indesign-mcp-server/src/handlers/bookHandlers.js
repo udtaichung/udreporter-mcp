@@ -116,6 +116,10 @@ export class BookHandlers {
 
         const escapedBookPath = escapeFilePathForJsx(bookPath);
         const escapedOutputPath = escapeFilePathForJsx(outputPath);
+        const allowedFormats = new Set(['PDF', 'EPUB', 'HTML']);
+        const normalizedFormat = typeof format === 'string' ? format.trim().toUpperCase() : 'PDF';
+        const safeFormat = allowedFormats.has(normalizedFormat) ? normalizedFormat : 'PDF';
+        const escapedFormat = escapeJsxString(safeFormat);
 
         const script = [
             `var bookFile = File("${escapedBookPath}");`,
@@ -126,14 +130,14 @@ export class BookHandlers {
             '} else {',
             '  var book = app.open(bookFile);',
             '',
-            `  if ("${format}" === "PDF") {`,
+            `  if ("${escapedFormat}" === "PDF") {`,
             '    book.exportFile(ExportFormat.PDF_TYPE, outputFile);',
-            `  } else if ("${format}" === "EPUB") {`,
+            `  } else if ("${escapedFormat}" === "EPUB") {`,
             '    book.exportFile(ExportFormat.EPUB, outputFile);',
-            `  } else if ("${format}" === "HTML") {`,
+            `  } else if ("${escapedFormat}" === "HTML") {`,
             '    book.exportFile(ExportFormat.HTML, outputFile);',
             '  } else {',
-            `    "Unsupported format: ${format}";`,
+            `    "Unsupported format: ${escapedFormat}";`,
             '  }',
             '',
             '  book.close();',

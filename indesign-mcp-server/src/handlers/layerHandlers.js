@@ -8,7 +8,9 @@ export class LayerHandlers {
     static async createLayer(args) {
         const { name, visible = true, locked = false, color = 'BLUE' } = args;
         const escapedName = escapeJsxString(name);
-        const escapedColor = escapeJsxString(color);
+        const normalizedColor = typeof color === 'string' ? color.trim().toUpperCase() : 'BLUE';
+        const safeColor = /^[A-Z_]+$/.test(normalizedColor) ? normalizedColor : 'BLUE';
+        const escapedColor = escapeJsxString(safeColor);
         const script = [
             'if (app.documents.length === 0) {',
             '  "No document open";',
@@ -18,7 +20,7 @@ export class LayerHandlers {
             `    var layer = doc.layers.add({name: "${escapedName}"});`,
             `    layer.visible = ${!!visible};`,
             `    layer.locked = ${!!locked};`,
-            '    try { layer.layerColor = UIColors["' + escapedColor + '"]; } catch(e) {}',
+            `    try { layer.layerColor = UIColors["${escapedColor}"]; } catch(e) {}`,
             `    "Layer created: ${escapedName}";`,
             '  } catch (e) {',
             '    "Error creating layer: " + e.message;',
@@ -71,4 +73,3 @@ export class LayerHandlers {
         return formatResponse(result, 'List Layers');
     }
 }
-
