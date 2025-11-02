@@ -1,8 +1,5 @@
-# InDesign MCP Server Documentation
+# InDesign MCP Server
 
-Refer to the canonical bilingual README at the repository root:
+The project documentation now lives at the repository root in `../README.md`.
 
-- [English version](../README.md#english)
-- [中文版本](../README.md#中文)
-
-This subdirectory contains the source code, tests, scripts, and docs for the project. The root README provides the most up-to-date overview, setup instructions, and configuration examples.
+Please refer to that file for the bilingual overview, setup instructions, and configuration examples.

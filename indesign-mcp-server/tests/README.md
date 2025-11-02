@@ -1,575 +1,585 @@
-# InDesign MCP Server - Test Suite
+# InDesign MCP 服务器 - 测试套件
 
-This directory contains comprehensive tests for the InDesign MCP Server, organized by functionality and complexity.
+本目录按功能和复杂性组织，包含对 InDesign MCP 服务器的全面测试。
 
-## 📊 **Coverage Status: 100% Complete**
+## 📊 **覆盖状态：100% 完成**
 
-- ✅ **All 13 handlers** properly tested
-- ✅ **All 135 tools** covered by tests
-- ✅ **Session management** fully integrated and tested
-- ✅ **Real-time progress bar** with visual feedback
-- ✅ **Comprehensive error handling** and reporting
+- ✅ **所有 13 个处理程序**均已正确测试
+- ✅ **所有 135 个工具**均已包含在测试中
+- ✅ **会话管理**已完全集成和测试
+- ✅ **实时进度条**和视觉反馈
+- ✅ **全面的错误处理**和报告
 
-## Quick Start
+## 快速入门
 
-Run all tests with real-time progress bar:
+运行带有实时进度条的所有测试：
 
 ```bash
 node tests/index.js
 ```
 
-Run only required tests:
+仅运行必需的测试：
 
 ```bash
 node tests/index.js --required
 ```
 
-Get help and coverage information:
+获取帮助和覆盖率信息：
 
 ```bash
 node tests/index.js --help
 ```
 
-## Test Structure
+## 测试结构
 
-### Required Test Suites (Core Functionality)
+### 必需的测试套件（核心功能）
 
-1. **Basic Connectivity** ✅ - Tests basic InDesign connectivity and MCP protocol
-   - `test-mcp-protocol.js` - MCP protocol communication
-   - `test-indesign-basic.js` - Basic InDesign accessibility
+1. **基本连接性** ✅ - 测试 InDesign 的基本连接和 MCP 协议
+   
+   - `test-mcp-protocol.js` - MCP 协议通信
+   - `test-indesign-basic.js` - InDesign 基本可访问性
 
-2. **Document Foundation** ✅ - Tests basic document creation and management
-   - `test-simple-document.js` - Simple document creation
-   - `test-document-and-page.js` - Document and page management
+2. **文档基础** ✅ - 测试基本文档创建和管理
+   
+   - `test-simple-document.js` - 简单文档创建
+   - `test-document-and-page.js` - 文档和页面管理
 
-3. **Document Preferences** ✅ - Tests comprehensive document preferences functionality
-   - `test-document-preferences.js` - All document preference types (General, Grid, Guides, Text, Margins)
+3. **文档设置** ✅ - 测试全面的文档设置功能
+   
+   - `test-document-preferences.js` - 所有文档设置类型（常规、网格、参考线、文本、边距）
 
-4. **Grid and Layout** ✅ - Tests grid settings and layout preferences
-   - `test-grid-layout.js` - Grid and layout functionality
+4. **网格和布局** ✅ - 测试网格设置和布局首选项
+   
+   - `test-grid-layout.js` - 网格和布局功能
 
-### Optional Test Suites (Advanced Functionality)
+### 可选的测试套件（高级功能）
 
-5. **Content Management** ✅ - Tests text, graphics, styles, colors, and table management
-   - `test-content-management.js` - Comprehensive content creation and management
+5. **内容管理** ✅ - 测试文本、图形、样式、颜色和表格管理
+   
+   - `test-content-management.js` - 全面的内容创建和管理
 
-6. **PageItem and Group** ✅ - Tests PageItem and Group management
-   - `test-pageitem-group.js` - PageItem and Group operations
+6. **页面项和组** ✅ - 测试页面项 (PageItem) 和组管理
+   
+   - `test-pageitem-group.js` - 页面项和组操作
 
-7. **Advanced Features** ✅ - Tests master spreads, spreads, layers, export, and utility functions
-   - `test-advanced-features.js` - Master spreads, spreads, layers, export, and utility functions
+7. **高级功能** ✅ - 测试母版页、版面、图层、导出和实用程序函数
+   
+   - `test-advanced-features.js` - 母版页、版面、图层、导出和实用程序函数
 
-8. **Standard Document** ✅ - Tests creating a complete document with proper layout
-   - `test-standard-document.js` - Complete document with heading, subheading, text, graphics, and footer
+8. **标准文档** ✅ - 测试创建具有适当布局的完整文档
+   
+   - `test-standard-document.js` - 包含标题、副标题、文本、图形和页脚的完整文档
 
-9. **Basic Workflow** ✅ - Tests essential workflow operations
-   - `test-basic-workflow.js` - Basic workflow functionality
+9. **基本工作流程** ✅ - 测试基本工作流程操作
+   
+   - `test-basic-workflow.js` - 基本工作流程功能
 
-10. **Enhanced Functionality** ✅ - Tests session management, smart positioning, and new features
-    - `test-enhanced-functionality.js` - Session management, smart positioning, new tools
+10. **增强功能** ✅ - 测试会话管理、智能定位和新功能
+    
+    - `test-enhanced-functionality.js` - 会话管理、智能定位、新工具
 
-## Test Categories
+## 测试类别
 
-### Core Tests
+### 核心测试
 
-- **MCP Protocol**: Basic Model Context Protocol communication
-- **InDesign Connectivity**: Adobe InDesign accessibility and basic operations
-- **Document Management**: Document creation, opening, saving, closing
-- **Page Management**: Page creation, manipulation, and properties
+- **MCP 协议**: 基本模型上下文协议通信
+- **InDesign 连接性**: Adobe InDesign 可访问性和基本操作
+- **文档管理**: 文档创建、打开、保存、关闭
+- **页面管理**: 页面创建、操作和属性
 
-### Document Preferences
+### 文档设置
 
-- **General Preferences**: Page dimensions, facing pages, bleed settings
-- **Grid Preferences**: Document grid, baseline grid, alignment
-- **Guides Preferences**: Guide locking, positioning, snap zones
-- **Text Preferences**: Typographer's quotes, font highlighting
-- **Margins Preferences**: Margin settings, column configuration
+- **常规设置**: 页面尺寸、对开本、出血设置
+- **网格设置**: 文档网格、基线网格、对齐
+- **参考线设置**: 参考线锁定、定位、吸附区
+- **文本设置**: 排版引号、字体高亮显示
+- **边距设置**: 边距设置、栏配置
 
-### Content Management
+### 内容管理
 
-- **Text Management**: Text frame creation, editing, find/replace
-- **Graphics Management**: Rectangle, ellipse, and shape creation
-- **Styles Management**: Paragraph and character style creation and application
-- **Colors Management**: Color swatch creation and application
-- **Table Management**: Table creation and data population
+- **文本管理**: 文本框创建、编辑、查找/替换
+- **图形管理**: 矩形、椭圆和形状创建
+- **样式管理**: 段落样式和字符样式的创建和应用
+- **颜色管理**: 颜色样本的创建和应用
+- **表格管理**: 表格创建和数据填充
 
-### Advanced Features
+### 高级功能
 
-- **Master Spread Management**: Master page creation, application, and content
-- **Spread Management**: Spread properties, guides, and content placement
-- **Layer Management**: Layer creation, activation, and organization
-- **PageItem Management**: Creating and manipulating page items
-- **Group Management**: Grouping and ungrouping objects
-- **Export Functionality**: PDF, image, and package export
-- **Utility Functions**: Custom ExtendScript execution and document viewing
-- **Workflow Operations**: End-to-end workflow testing
+- **母版页管理**: 母版页创建、应用和内容
+- **版面管理**: 版面属性、参考线和内容放置
+- **图层管理**: 图层创建、激活和组织
+- **页面项管理**: 创建和操作页面项
+- **组管理**: 对象分组和取消分组
+- **导出功能**: PDF、图像和程序包导出
+- **实用程序函数**: 自定义 ExtendScript 执行和文档查看
+- **工作流程操作**: 端到端工作流程测试
 
-## Test Data
+## 测试数据
 
-- `test-data.csv` - Sample data for data merge operations
+- `test-data.csv` - 用于数据合并操作的样本数据
 
-## Running Individual Tests
+## 运行单个测试
 
-You can run individual test files directly:
+您可以直接运行单个测试文件：
 
 ```bash
-# Run a specific test
+# 运行特定测试
 node tests/test-document-preferences.js
 
-# Run basic connectivity tests
+# 运行基本连接性测试
 node tests/test-mcp-protocol.js
 node tests/test-indesign-basic.js
 ```
 
-## Test Results
+## 测试结果
 
-The master test suite provides detailed results including:
+主测试套件提供详细结果，包括：
 
-- **Real-time Progress Bar**: Visual progress tracking with timing
-- **Overall Status**: Complete success, partial success, or critical failure
-- **Suite Results**: Individual test suite pass/fail status with categories
-- **Handler Coverage**: Detailed coverage analysis for all 13 handlers
-- **Test Details**: Specific test file results
-- **Error Information**: Detailed error messages and output
-- **Duration**: Total test execution time
-- **Coverage Statistics**: Percentage coverage for all handlers and tools
+- **实时进度条**: 带有计时信息的视觉进度跟踪
+- **总体状态**: 完全成功、部分成功或关键失败
+- **套件结果**: 带有类别和通过/失败状态的单个测试套件
+- **处理程序覆盖率**: 所有 13 个处理程序的详细覆盖率分析
+- **测试详情**: 具体测试文件结果
+- **错误信息**: 详细的错误消息和输出
+- **持续时间**: 总测试执行时间
+- **覆盖率统计**: 所有处理程序和工具的百分比覆盖率
 
-## Exit Codes
+## 退出代码
 
-- `0` - Success (all required tests passed)
-- `1` - Critical failure (required tests failed)
+- `0` - 成功（所有必需的测试均通过）
+- `1` - 关键失败（必需的测试失败）
 
-## Test Configuration
+## 测试配置
 
-Tests are configured with:
+测试配置包括：
 
-- **Server Path**: Points to the main server entry point
-- **Timeouts**: 30 seconds per test
-- **Delays**: 1-2 seconds between tests for stability
-- **Error Handling**: Comprehensive error capture and reporting
+- **服务器路径**: 指向主服务器入口点
+- **超时时间**: 每个测试 30 秒
+- **延迟**: 测试之间 1-2 秒以确保稳定性
+- **错误处理**: 全面的错误捕获和报告
 
-## Adding New Tests
+## 添加新测试
 
-To add a new test:
+要添加新测试：
 
-1. Create the test file in the `tests/` directory
-2. Follow the naming convention: `test-<category>-<description>.js`
-3. Ensure the test exits with code `0` on success, `1` on failure
-4. Add the test to the appropriate suite in `tests/index.js`
-5. Update this README with the new test information
+1. 在 `tests/` 目录中创建测试文件
+2. 遵循命名约定：`test-<category>-<description>.js`
+3. 确保测试成功时退出代码为 `0`，失败时退出代码为 `1`
+4. 在 `tests/index.js` 中将测试添加到适当的套件中
+5. 在此 README 中更新新的测试信息
 
-## Test Best Practices
+## 测试最佳实践
 
-1. **Isolation**: Each test should be independent and not rely on other tests
-2. **Cleanup**: Always clean up resources (close documents, etc.)
-3. **Error Handling**: Provide clear error messages and context
-4. **Documentation**: Include clear descriptions of what each test does
-5. **Performance**: Keep tests reasonably fast while being thorough
+1. **隔离性**: 每个测试都应独立，不依赖于其他测试
+2. **清理**: 始终清理资源（关闭文档等）
+3. **错误处理**: 提供清晰的错误消息和上下文
+4. **文档**: 对每个测试的功能进行清晰的描述
+5. **性能**: 保持测试速度合理，同时确保全面性
 
-## Troubleshooting
+## 故障排除
 
-### Common Issues
+### 常见问题
 
-1. **InDesign Not Running**: Ensure Adobe InDesign 2025 is installed and running
-2. **Permission Issues**: Ensure the script has permission to execute
-3. **Path Issues**: Verify the server path is correct
-4. **Timeout Issues**: Increase timeout values for slower systems
+1. **InDesign 未运行**: 确保已安装并正在运行 Adobe InDesign 2025
+2. **权限问题**: 确保脚本具有执行权限
+3. **路径问题**: 验证服务器路径是否正确
+4. **超时问题**: 增加较慢系统的超时值
 
-### Debug Mode
+### 调试模式
 
-For debugging, you can run individual tests with verbose output:
+要进行调试，您可以直接运行单个测试并启用详细输出：
 
 ```bash
-# Run with Node.js debug output
+# 使用 Node.js 调试输出运行
 NODE_DEBUG=* node tests/test-document-preferences.js
 ```
 
-## Test Maintenance
+## 测试维护
 
-- Regularly update tests when adding new functionality
-- Remove obsolete tests when features are deprecated
-- Keep test data current and relevant
-- Monitor test execution times and optimize as needed
+- 在添加新功能时定期更新测试
+- 在功能被弃用时删除过时的测试
+- 保持测试数据最新和相关
+- 监控测试执行时间并按需优化
 
-# InDesign MCP Server - Test Coverage Analysis
+# InDesign MCP 服务器 - 测试覆盖率分析
 
-## 📊 **Comprehensive Coverage Overview**
+## 📊 **全面的覆盖概览**
 
-This document provides a detailed analysis of test coverage for all handlers, tools, and functionality in the InDesign MCP Server.
+本文档提供了对 InDesign MCP 服务器所有处理程序、工具和功能的详细测试覆盖率分析。
 
-## 🎯 **Handler Coverage Summary**
+## 🎯 **处理程序覆盖率摘要**
 
-| Handler                  | Status    | Tools | Test Files                                                                             | Coverage |
-| ------------------------ | --------- | ----- | -------------------------------------------------------------------------------------- | -------- |
-| **DocumentHandlers**     | ✅ Covered | 15    | `test-document-preferences.js`, `test-simple-document.js`, `test-document-and-page.js` | 100%     |
-| **PageHandlers**         | ✅ Covered | 18    | `test-document-and-page.js`, `test-basic-workflow.js`                                  | 100%     |
-| **TextHandlers**         | ✅ Covered | 5     | `test-content-management.js`, `test-standard-document.js`                              | 100%     |
-| **GraphicsHandlers**     | ✅ Covered | 8     | `test-content-management.js`, `test-standard-document.js`                              | 100%     |
-| **StyleHandlers**        | ✅ Covered | 8     | `test-content-management.js`, `test-standard-document.js`                              | 100%     |
-| **BookHandlers**         | ✅ Covered | 16    | `test-advanced-features.js`                                                            | 100%     |
-| **PageItemHandlers**     | ✅ Covered | 8     | `test-pageitem-group.js`                                                               | 100%     |
-| **GroupHandlers**        | ✅ Covered | 8     | `test-pageitem-group.js`                                                               | 100%     |
-| **MasterSpreadHandlers** | ✅ Covered | 9     | `test-advanced-features.js`                                                            | 100%     |
-| **ExportHandlers**       | ✅ Covered | 3     | `test-advanced-features.js`                                                            | 100%     |
-| **UtilityHandlers**      | ✅ Covered | 4     | `test-enhanced-functionality.js`, `test-advanced-features.js`                          | 100%     |
+| 处理程序                     | 状态    | 工具  | 测试文件                                                                                   | 覆盖率  |
+| ------------------------ | ----- | --- | -------------------------------------------------------------------------------------- | ---- |
+| **DocumentHandlers**     | ✅ 已覆盖 | 15  | `test-document-preferences.js`, `test-simple-document.js`, `test-document-and-page.js` | 100% |
+| **PageHandlers**         | ✅ 已覆盖 | 18  | `test-document-and-page.js`, `test-basic-workflow.js`                                  | 100% |
+| **TextHandlers**         | ✅ 已覆盖 | 5   | `test-content-management.js`, `test-standard-document.js`                              | 100% |
+| **GraphicsHandlers**     | ✅ 已覆盖 | 8   | `test-content-management.js`, `test-standard-document.js`                              | 100% |
+| **StyleHandlers**        | ✅ 已覆盖 | 8   | `test-content-management.js`, `test-standard-document.js`                              | 100% |
+| **BookHandlers**         | ✅ 已覆盖 | 16  | `test-advanced-features.js`                                                            | 100% |
+| **PageItemHandlers**     | ✅ 已覆盖 | 8   | `test-pageitem-group.js`                                                               | 100% |
+| **GroupHandlers**        | ✅ 已覆盖 | 8   | `test-pageitem-group.js`                                                               | 100% |
+| **MasterSpreadHandlers** | ✅ 已覆盖 | 9   | `test-advanced-features.js`                                                            | 100% |
+| **ExportHandlers**       | ✅ 已覆盖 | 3   | `test-advanced-features.js`                                                            | 100% |
+| **UtilityHandlers**      | ✅ 已覆盖 | 4   | `test-enhanced-functionality.js`, `test-advanced-features.js`                          | 100% |
 
-**Total Coverage: 100% (13/13 handlers)**
+**总覆盖率：100% (13/13 个处理程序)**
 
-## 🧪 **Test Suite Breakdown**
+## 🧪 **测试套件细分**
 
-### **Required Test Suites (Core Functionality)**
+### **必需的测试套件（核心功能）**
 
-#### 1. **Basic Connectivity** ✅
+#### 1. **基本连接性** ✅
 
-- **Files**: `test-mcp-protocol.js`, `test-indesign-basic.js`
-- **Purpose**: Tests MCP protocol communication and InDesign accessibility
-- **Coverage**: Foundation connectivity and basic InDesign operations
+- **文件**: `test-mcp-protocol.js`, `test-indesign-basic.js`
+- **目的**: 测试 MCP 协议通信和 InDesign 可访问性
+- **覆盖**: 基础连接和 InDesign 基本操作
 
-#### 2. **Document Foundation** ✅
+#### 2. **文档基础** ✅
 
-- **Files**: `test-simple-document.js`, `test-document-and-page.js`
-- **Purpose**: Tests basic document creation and page management
-- **Coverage**: DocumentHandlers, PageHandlers core functionality
+- **文件**: `test-simple-document.js`, `test-document-and-page.js`
+- **目的**: 测试基本文档创建和页面管理
+- **覆盖**: DocumentHandlers, PageHandlers 核心功能
 
-#### 3. **Document Preferences** ✅
+#### 3. **文档设置** ✅
 
-- **Files**: `test-document-preferences.js`
-- **Purpose**: Tests comprehensive document preferences functionality
-- **Coverage**: DocumentHandlers preferences and settings
+- **文件**: `test-document-preferences.js`
+- **目的**: 测试全面的文档设置功能
+- **覆盖**: DocumentHandlers 设置和配置
 
-#### 4. **Grid and Layout** ✅
+#### 4. **网格和布局** ✅
 
-- **Files**: `test-grid-layout.js`
-- **Purpose**: Tests grid settings and layout preferences
-- **Coverage**: DocumentHandlers grid and layout functionality
+- **文件**: `test-grid-layout.js`
+- **目的**: 测试网格设置和布局首选项
+- **覆盖**: DocumentHandlers 网格和布局功能
 
-### **Optional Test Suites (Advanced Functionality)**
+### **可选的测试套件（高级功能）**
 
-#### 5. **Content Management** ✅
+#### 5. **内容管理** ✅
 
-- **Files**: `test-content-management.js`
-- **Purpose**: Tests text, graphics, styles, colors, and table management
-- **Coverage**: TextHandlers, GraphicsHandlers, StyleHandlers
+- **文件**: `test-content-management.js`
+- **目的**: 测试文本、图形、样式、颜色和表格管理
+- **覆盖**: TextHandlers, GraphicsHandlers, StyleHandlers
 
-#### 6. **PageItem and Group** ✅
+#### 6. **页面项和组** ✅
 
-- **Files**: `test-pageitem-group.js`
-- **Purpose**: Tests PageItem and Group management functionality
-- **Coverage**: PageItemHandlers, GroupHandlers
+- **文件**: `test-pageitem-group.js`
+- **目的**: 测试页面项和组管理功能
+- **覆盖**: PageItemHandlers, GroupHandlers
 
-#### 7. **Advanced Features** ✅
+#### 7. **高级功能** ✅
 
-- **Files**: `test-advanced-features.js`
-- **Purpose**: Tests master spreads, spreads, layers, export, and utility functions
-- **Coverage**: MasterSpreadHandlers, ExportHandlers, UtilityHandlers, BookHandlers
+- **文件**: `test-advanced-features.js`
+- **目的**: 测试母版页、版面、图层、导出和实用程序函数
+- **覆盖**: MasterSpreadHandlers, ExportHandlers, UtilityHandlers, BookHandlers
 
-#### 8. **Standard Document** ✅
+#### 8. **标准文档** ✅
 
-- **Files**: `test-standard-document.js`
-- **Purpose**: Tests creating a complete document with proper layout and styling
-- **Coverage**: Comprehensive workflow testing
+- **文件**: `test-standard-document.js`
+- **目的**: 测试创建具有适当布局和样式的完整文档
+- **覆盖**: 全面的工作流程测试
 
-#### 9. **Basic Workflow** ✅
+#### 9. **基本工作流程** ✅
 
-- **Files**: `test-basic-workflow.js`
-- **Purpose**: Tests essential workflow operations
-- **Coverage**: End-to-end workflow testing
+- **文件**: `test-basic-workflow.js`
+- **目的**: 测试基本工作流程操作
+- **覆盖**: 端到端工作流程测试
 
-#### 10. **Enhanced Functionality** ✅
+#### 10. **增强功能** ✅
 
-- **Files**: `test-enhanced-functionality.js`
-- **Purpose**: Tests session management, smart positioning, and new features
-- **Coverage**: Session management, smart positioning, new tools
+- **文件**: `test-enhanced-functionality.js`
+- **目的**: 测试会话管理、智能定位和新功能
+- **覆盖**: 会话管理、智能定位、新工具
 
-## 🔧 **Tool Coverage by Handler**
+## 🔧 **按处理程序划分的工具覆盖率**
 
-### **DocumentHandlers (15 tools)**
-
-```javascript
-// Core Document Operations
-✅ get_document_info
-✅ create_document
-✅ open_document
-✅ save_document
-✅ close_document
-
-// Document Preferences
-✅ get_document_preferences
-✅ set_document_preferences
-✅ get_document_grid_settings
-✅ set_document_grid_settings
-✅ get_document_layout_preferences
-✅ set_document_layout_preferences
-
-// Advanced Document Features
-✅ preflight_document
-✅ zoom_to_page
-✅ data_merge
-✅ get_document_elements
-✅ get_document_styles
-✅ get_document_colors
-✅ get_document_stories
-✅ find_text_in_document
-✅ get_document_layers
-✅ organize_document_layers
-✅ get_document_hyperlinks
-✅ create_document_hyperlink
-✅ get_document_sections
-✅ create_document_section
-✅ get_document_xml_structure
-✅ export_document_xml
-✅ save_document_to_cloud
-✅ open_cloud_document
-✅ validate_document
-✅ cleanup_document
-```
-
-### **PageHandlers (18 tools)**
+### **DocumentHandlers (15 个工具)**
 
 ```javascript
-// Basic Page Operations
-✅ add_page
-✅ get_page_info
-✅ navigate_to_page
+// 核心文档操作
+✅ get_document_info // 获取文档信息
+✅ create_document // 创建文档
+✅ open_document // 打开文档
+✅ save_document // 保存文档
+✅ close_document // 关闭文档
 
-// Advanced Page Management
-✅ duplicate_page
-✅ move_page
-✅ delete_page
-✅ set_page_properties
-✅ adjust_page_layout
-✅ resize_page
-✅ create_page_guides
-✅ place_file_on_page
-✅ place_xml_on_page
-✅ snapshot_page_layout
-✅ delete_page_layout_snapshot
-✅ delete_all_page_layout_snapshots
-✅ reframe_page
-✅ select_page
-✅ get_page_content_summary
+// 文档设置
+✅ get_document_preferences // 获取文档设置
+✅ set_document_preferences // 设置文档设置
+✅ get_document_grid_settings // 获取文档网格设置
+✅ set_document_grid_settings // 设置文档网格设置
+✅ get_document_layout_preferences // 获取文档布局设置
+✅ set_document_layout_preferences // 设置文档布局设置
+
+// 高级文档功能
+✅ preflight_document // 预检文档
+✅ zoom_to_page // 缩放到页面
+✅ data_merge // 数据合并
+✅ get_document_elements // 获取文档元素
+✅ get_document_styles // 获取文档样式
+✅ get_document_colors // 获取文档颜色
+✅ get_document_stories // 获取文档故事
+✅ find_text_in_document // 在文档中查找文本
+✅ get_document_layers // 获取文档图层
+✅ organize_document_layers // 组织文档图层
+✅ get_document_hyperlinks // 获取文档超链接
+✅ create_document_hyperlink // 创建文档超链接
+✅ get_document_sections // 获取文档章节
+✅ create_document_section // 创建文档章节
+✅ get_document_xml_structure // 获取文档 XML 结构
+✅ export_document_xml // 导出文档 XML
+✅ save_document_to_cloud // 保存文档到云端
+✅ open_cloud_document // 打开云端文档
+✅ validate_document // 验证文档
+✅ cleanup_document // 清理文档
 ```
 
-### **TextHandlers (5 tools)**
+### **PageHandlers (18 个工具)**
 
 ```javascript
-// Text Frame Operations
-✅ create_text_frame
-✅ edit_text_frame
+// 基本页面操作
+✅ add_page // 添加页面
+✅ get_page_info // 获取页面信息
+✅ navigate_to_page // 导航到页面
 
-// Table Operations
-✅ create_table
-✅ populate_table
-
-// Text Search and Replace
-✅ find_replace_text
+// 高级页面管理
+✅ duplicate_page // 复制页面
+✅ move_page // 移动页面
+✅ delete_page // 删除页面
+✅ set_page_properties // 设置页面属性
+✅ adjust_page_layout // 调整页面布局
+✅ resize_page // 调整页面大小
+✅ create_page_guides // 创建页面参考线
+✅ place_file_on_page // 在页面上放置文件
+✅ place_xml_on_page // 在页面上放置 XML
+✅ snapshot_page_layout // 页面布局快照
+✅ delete_page_layout_snapshot // 删除页面布局快照
+✅ delete_all_page_layout_snapshots // 删除所有页面布局快照
+✅ reframe_page // 重新构图页面
+✅ select_page // 选择页面
+✅ get_page_content_summary // 获取页面内容摘要
 ```
 
-### **GraphicsHandlers (8 tools)**
+### **TextHandlers (5 个工具)**
 
 ```javascript
-// Basic Shapes
-✅ create_rectangle
-✅ create_ellipse
-✅ create_polygon
+// 文本框操作
+✅ create_text_frame // 创建文本框
+✅ edit_text_frame // 编辑文本框
 
-// Image Operations
-✅ place_image
-✅ get_image_info
+// 表格操作
+✅ create_table // 创建表格
+✅ populate_table // 填充表格
 
-// Image Asset Management
-✅ Image linking vs embedding
-✅ Object style application to images
-✅ Image metadata retrieval
-✅ Multi-format support (SVG, HTML, text)
-✅ Smart positioning and bounds checking
-
-// Object Styles
-✅ create_object_style
-✅ list_object_styles
-✅ apply_object_style
+// 文本查找和替换
+✅ find_replace_text // 查找替换文本
 ```
 
-### **StyleHandlers (8 tools)**
+### **GraphicsHandlers (8 个工具)**
 
 ```javascript
-// Style Creation
-✅ create_paragraph_style
-✅ create_character_style
+// 基本形状
+✅ create_rectangle // 创建矩形
+✅ create_ellipse // 创建椭圆
+✅ create_polygon // 创建多边形
 
-// Style Application
-✅ apply_paragraph_style
-✅ apply_character_style
-✅ apply_color
+// 图像操作
+✅ place_image // 放置图像
+✅ get_image_info // 获取图像信息
 
-// Color Management
-✅ create_color_swatch
-✅ list_styles
-✅ list_color_swatches
+// 图像资源管理
+✅ Image linking vs embedding // 图像链接与嵌入
+✅ Object style application to images // 对象样式应用于图像
+✅ Image metadata retrieval // 图像元数据检索
+✅ Multi-format support (SVG, HTML, text) // 多格式支持 (SVG, HTML, 文本)
+✅ Smart positioning and bounds checking // 智能定位和边界检查
+
+// 对象样式
+✅ create_object_style // 创建对象样式
+✅ list_object_styles // 列出对象样式
+✅ apply_object_style // 应用对象样式
 ```
 
-### **BookHandlers (16 tools)**
+### **StyleHandlers (8 个工具)**
 
 ```javascript
-// Book Operations
-✅ create_book
-✅ open_book
-✅ list_books
-✅ add_document_to_book
-✅ synchronize_book
+// 样式创建
+✅ create_paragraph_style // 创建段落样式
+✅ create_character_style // 创建字符样式
 
-// Book Management
-✅ repaginate_book
-✅ update_all_cross_references
-✅ update_all_numbers
-✅ update_chapter_and_paragraph_numbers
+// 样式应用
+✅ apply_paragraph_style // 应用段落样式
+✅ apply_character_style // 应用字符样式
+✅ apply_color // 应用颜色
 
-// Book Export
-✅ export_book
-✅ package_book
-✅ preflight_book
-✅ print_book
-
-// Book Information
-✅ get_book_info
-✅ set_book_properties
+// 颜色管理
+✅ create_color_swatch // 创建颜色样本
+✅ list_styles // 列出样式
+✅ list_color_swatches // 列出颜色样本
 ```
 
-### **PageItemHandlers (8 tools)**
+### **BookHandlers (16 个工具)**
 
 ```javascript
-// PageItem Operations
-✅ get_page_item_info
-✅ select_page_item
-✅ move_page_item
-✅ resize_page_item
-✅ set_page_item_properties
-✅ duplicate_page_item
-✅ delete_page_item
-✅ list_page_items
+// 图书操作
+✅ create_book // 创建图书
+✅ open_book // 打开图书
+✅ list_books // 列出图书
+✅ add_document_to_book // 将文档添加到图书
+✅ synchronize_book // 同步图书
+
+// 图书管理
+✅ repaginate_book // 重新分页图书
+✅ update_all_cross_references // 更新所有交叉引用
+✅ update_all_numbers // 更新所有编号
+✅ update_chapter_and_paragraph_numbers // 更新章节和段落编号
+
+// 图书导出
+✅ export_book // 导出图书
+✅ package_book // 打包图书
+✅ preflight_book // 预检图书
+✅ print_book // 打印图书
+
+// 图书信息
+✅ get_book_info // 获取图书信息
+✅ set_book_properties // 设置图书属性
 ```
 
-### **GroupHandlers (8 tools)**
+### **PageItemHandlers (8 个工具)**
 
 ```javascript
-// Group Operations
-✅ create_group
-✅ create_group_from_items
-✅ ungroup
-✅ get_group_info
-✅ add_item_to_group
-✅ remove_item_from_group
-✅ list_groups
-✅ set_group_properties
+// 页面项操作
+✅ get_page_item_info // 获取页面项信息
+✅ select_page_item // 选择页面项
+✅ move_page_item // 移动页面项
+✅ resize_page_item // 调整页面项大小
+✅ set_page_item_properties // 设置页面项属性
+✅ duplicate_page_item // 复制页面项
+✅ delete_page_item // 删除页面项
+✅ list_page_items // 列出页面项
 ```
 
-### **MasterSpreadHandlers (9 tools)**
+### **GroupHandlers (8 个工具)**
 
 ```javascript
-// Master Spread Operations
-✅ create_master_spread
-✅ list_master_spreads
-✅ delete_master_spread
-✅ duplicate_master_spread
-✅ apply_master_spread
-
-// Master Content
-✅ create_master_text_frame
-✅ create_master_rectangle
-✅ create_master_guides
-
-// Master Information
-✅ get_master_spread_info
+// 组操作
+✅ create_group // 创建组
+✅ create_group_from_items // 从页面项创建组
+✅ ungroup // 取消分组
+✅ get_group_info // 获取组信息
+✅ add_item_to_group // 将项目添加到组
+✅ remove_item_from_group // 从组中移除项目
+✅ list_groups // 列出组
+✅ set_group_properties // 设置组属性
 ```
 
-### **ExportHandlers (3 tools)**
+### **MasterSpreadHandlers (9 个工具)**
 
 ```javascript
-// Export Operations
-✅ export_pdf
-✅ export_images
-✅ package_document
+// 母版页操作
+✅ create_master_spread // 创建母版页
+✅ list_master_spreads // 列出母版页
+✅ delete_master_spread // 删除母版页
+✅ duplicate_master_spread // 复制母版页
+✅ apply_master_spread // 应用母版页
+
+// 母版页内容
+✅ create_master_text_frame // 创建母版文本框
+✅ create_master_rectangle // 创建母版矩形
+✅ create_master_guides // 创建母版参考线
+
+// 母版信息
+✅ get_master_spread_info // 获取母版页信息
 ```
 
-### **UtilityHandlers (4 tools)**
+### **ExportHandlers (3 个工具)**
 
 ```javascript
-// Utility Operations
-✅ execute_indesign_code
-✅ view_document
-✅ get_session_info
-✅ clear_session
+// 导出操作
+✅ export_pdf // 导出 PDF
+✅ export_images // 导出图像
+✅ package_document // 打包文档
 ```
 
-## 🎯 **Session Management Coverage**
+### **UtilityHandlers (4 个工具)**
 
-### **Session Integration Testing**
+```javascript
+// 实用程序操作
+✅ execute_indesign_code // 执行 InDesign 代码
+✅ view_document // 查看文档
+✅ get_session_info // 获取会话信息
+✅ clear_session // 清除会话
+```
 
-- ✅ **DocumentHandlers**: Stores page dimensions and document info
-- ✅ **TextHandlers**: Uses smart positioning for content placement
-- ✅ **GraphicsHandlers**: Uses smart positioning for shapes and images
-- ✅ **UtilityHandlers**: Provides session info and cleanup
+## 🎯 **会话管理覆盖率**
 
-### **Session Features Tested**
+### **会话集成测试**
 
-- ✅ **Smart Positioning**: Automatic content placement when coordinates aren't provided
-- ✅ **Page Dimension Tracking**: Stores document dimensions automatically
-- ✅ **Session Persistence**: Maintains state across operations
-- ✅ **Session Information**: Provides detailed session status
-- ✅ **Session Cleanup**: Proper session reset functionality
+- ✅ **DocumentHandlers**: 存储页面尺寸和文档信息
+- ✅ **TextHandlers**: 使用智能定位进行内容放置
+- ✅ **GraphicsHandlers**: 使用智能定位进行形状和图像放置
+- ✅ **UtilityHandlers**: 提供会话信息和清理
 
-## 📈 **Coverage Statistics**
+### **测试的会话功能**
 
-### **Overall Coverage**
+- ✅ **智能定位**: 在未提供坐标时自动放置内容
+- ✅ **页面尺寸跟踪**: 自动存储文档尺寸
+- ✅ **会话持久性**: 跨操作保持状态
+- ✅ **会话信息**: 提供详细的会话状态
+- ✅ **会话清理**: 正确的会话重置功能
 
-- **Total Handlers**: 11
-- **Covered Handlers**: 11 (100%)
-- **Total Tools**: 135
-- **Test Files**: 10
-- **Test Suites**: 10
+## 📈 **覆盖率统计**
 
-### **Test Categories**
+### **总体覆盖率**
 
-- **Required Tests**: 4 suites (Core functionality)
-- **Optional Tests**: 6 suites (Advanced functionality)
-- **Integration Tests**: 1 suite (Enhanced functionality)
+- **处理程序总数**: 11
+- **已覆盖处理程序**: 11 (100%)
+- **工具总数**: 135
+- **测试文件**: 10
+- **测试套件**: 10
 
-### **Coverage by Category**
+### **测试类别**
 
-- **Connectivity**: 100% (MCP protocol, InDesign access)
-- **Document Management**: 100% (Document lifecycle, preferences)
-- **Content Creation**: 100% (Text, graphics, styles, tables)
-- **Advanced Layout**: 100% (PageItems, groups, master spreads)
-- **Production**: 100% (Export, books, utilities)
-- **Session Management**: 100% (Smart positioning, state management)
+- **必需测试**: 4 个套件（核心功能）
+- **可选测试**: 6 个套件（高级功能）
+- **集成测试**: 1 个套件（增强功能）
 
-## 🚀 **Quality Assurance**
+### **按类别划分的覆盖率**
 
-### **Test Quality Metrics**
+- **连接性**: 100% (MCP 协议, InDesign 访问)
+- **文档管理**: 100% (文档生命周期, 设置)
+- **内容创建**: 100% (文本、图形、样式、表格)
+- **高级布局**: 100% (页面项、组、母版页)
+- **生产**: 100% (导出、图书、实用程序)
+- **会话管理**: 100% (智能定位、状态管理)
 
-- **Comprehensive Coverage**: All 135 tools tested
-- **Real-time Progress**: Visual progress bar with timing
-- **Detailed Reporting**: Handler-by-handler coverage analysis
-- **Error Handling**: Comprehensive error capture and reporting
-- **Session Integration**: Seamless session management testing
+## 🚀 **质量保证**
 
-### **Test Reliability**
+### **测试质量指标**
 
-- **Isolated Tests**: Each test runs independently
-- **Proper Cleanup**: Resources cleaned up after each test
-- **Timeout Protection**: Tests timeout to prevent hanging
-- **Error Recovery**: Graceful handling of test failures
-- **Detailed Logging**: Comprehensive test result logging
+- **全面覆盖**: 所有 135 个工具均经过测试
+- **实时进度**: 带有计时信息的视觉进度条
+- **详细报告**: 按处理程序划分的覆盖率分析
+- **错误处理**: 全面的错误捕获和报告
+- **会话集成**: 无缝的会话管理测试
 
-## 🎉 **Conclusion**
+### **测试可靠性**
 
-The InDesign MCP Server test suite provides **100% coverage** of all handlers and tools, with comprehensive testing of:
+- **隔离测试**: 每个测试独立运行
+- **正确清理**: 每个测试后清理资源
+- **超时保护**: 测试超时以防止挂起
+- **错误恢复**: 对测试失败进行优雅处理
+- **详细日志**: 全面的测试结果日志记录
 
-- ✅ **All 11 handlers** properly tested
-- ✅ **All 135 tools** covered by tests
-- ✅ **Session management** fully integrated and tested
-- ✅ **Smart positioning** functionality verified
-- ✅ **Real-time progress tracking** with visual feedback
-- ✅ **Comprehensive error handling** and reporting
+## 🎉 **结论**
 
-The test suite is production-ready and provides confidence that all functionality works correctly across different scenarios and use cases.
+InDesign MCP 服务器的测试套件提供了**100% 的覆盖率**，涵盖所有处理程序和工具，并对以下内容进行了全面测试：
+
+- ✅ **所有 11 个处理程序**均已正确测试
+- ✅ **所有 135 个工具**均已包含在测试中
+- ✅ **会话管理**已完全集成和测试
+- ✅ **智能定位**功能已验证
+- ✅ **实时进度跟踪**和视觉反馈
+- ✅ **全面的错误处理**和报告
+
+该测试套件已准备好投入生产，并确保所有功能在不同场景和用例中都能正常工作。

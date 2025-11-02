@@ -1,11 +1,11 @@
-﻿# Tool Suite Automation
+﻿# 工具套件自动化
 
-`run-all-tools.js` starts the MCP server, iterates every tool definition exported under `src/types`, and records pass/fail status for each invocation.
+`run-all-tools.js` 启动 MCP 服务器，遍历在 `src/types` 下导出的每个工具定义，并记录每次调用的通过/失败状态。
 
-## Usage
+## 用法
 
 ```
 node tests/tool-suite/run-all-tools.js
 ```
 
-Logs are stored in `tests/tool-suite/logs/` with a timestamped filename. Each log entry contains the tool name, success flag, and the returned message or error for post-run analysis.
+日志存储在 `tests/tool-suite/logs/` 目录下，文件名包含时间戳。每个日志条目包含工具名称、成功标志以及返回的消息或错误，以供事后分析。

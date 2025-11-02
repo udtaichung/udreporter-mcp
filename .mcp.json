@@ -1,9 +1,0 @@
-{
-  "mcpServers": {
-    "indesign-mcp": {
-      "command": "node",
-      "args": ["indesign-mcp-server/src/index.js"],
-      "cwd": "F:\\MCP\\indesign mcp"
-    }
-  }
-}
