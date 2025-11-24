@@ -227,6 +227,8 @@ export class InDesignMCPServer {
             case 'set_page_item_properties': return await PageItemHandlers.setPageItemProperties(args);
             case 'duplicate_page_item': return await PageItemHandlers.duplicatePageItem(args);
             case 'delete_page_item': return await PageItemHandlers.deletePageItem(args);
+            case 'get_page_item_script_labels': return await PageItemHandlers.getPageItemScriptLabels(args);
+            case 'set_page_item_script_label': return await PageItemHandlers.setPageItemScriptLabel(args);
             case 'list_page_items': return await PageItemHandlers.listPageItems(args);
 
             // Group Management

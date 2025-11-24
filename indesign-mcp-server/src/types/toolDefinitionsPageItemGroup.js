@@ -186,6 +186,76 @@ export const pageItemGroupToolDefinitions = [
         }
     },
     {
+        name: 'get_page_item_script_labels',
+        description: 'Read script labels from page items using selection or explicit identifiers',
+        inputSchema: {
+            type: 'object',
+            properties: {
+                mode: {
+                    type: 'string',
+                    enum: ['CURRENT_SELECTION', 'PAGE_ITEM', 'PAGE_NUMBER_AND_OBJECT_ID', 'ALL_WITH_LABELS'],
+                    description: 'Selection mode: current selection, page/item indices, page number and object id, or sweep all labelled items',
+                    default: 'CURRENT_SELECTION'
+                },
+                pageIndex: {
+                    type: 'integer',
+                    description: 'When mode=PAGE_ITEM, index of the page containing the item (zero-based)'
+                },
+                itemIndex: {
+                    type: 'integer',
+                    description: 'When mode=PAGE_ITEM, index of the page item (zero-based)'
+                },
+                pageNumber: {
+                    type: 'integer',
+                    description: 'When mode=PAGE_NUMBER_AND_OBJECT_ID, page number using documentOffset+1'
+                },
+                objectId: {
+                    type: 'integer',
+                    description: 'When mode=PAGE_NUMBER_AND_OBJECT_ID, InDesign object id of the page item'
+                }
+            },
+            additionalProperties: false
+        }
+    },
+    {
+        name: 'set_page_item_script_label',
+        description: 'Overwrite the script label for targeted page items',
+        inputSchema: {
+            type: 'object',
+            properties: {
+                mode: {
+                    type: 'string',
+                    enum: ['CURRENT_SELECTION', 'PAGE_ITEM', 'PAGE_NUMBER_AND_OBJECT_ID'],
+                    description: 'Selection mode: current selection, page/item indices, or page number plus object id',
+                    default: 'CURRENT_SELECTION'
+                },
+                pageIndex: {
+                    type: 'integer',
+                    description: 'When mode=PAGE_ITEM, index of the page containing the item (zero-based)'
+                },
+                itemIndex: {
+                    type: 'integer',
+                    description: 'When mode=PAGE_ITEM, index of the page item (zero-based)'
+                },
+                pageNumber: {
+                    type: 'integer',
+                    description: 'When mode=PAGE_NUMBER_AND_OBJECT_ID, page number using documentOffset+1'
+                },
+                objectId: {
+                    type: 'integer',
+                    description: 'When mode=PAGE_NUMBER_AND_OBJECT_ID, InDesign object id of the page item'
+                },
+                label: {
+                    type: 'string',
+                    description: 'Script label to assign; use empty string to clear',
+                    default: ''
+                }
+            },
+            required: ['label'],
+            additionalProperties: false
+        }
+    },
+    {
         name: 'list_page_items',
         description: 'List all page items on a specific page',
         inputSchema: {

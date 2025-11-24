@@ -39,13 +39,21 @@ class AdvancedTemplateServer {
             const { name, arguments: args } = request.params;
             const handler = TOOL_MAP[name];
             if (!handler) {
-                return formatErrorResponse(`Tool not found: ${name}`, 'Advanced Template Tool Call');
+                const payload = formatErrorResponse(`Tool not found: ${name}`, 'Advanced Template Tool Call');
+                return {
+                    content: [{ type: 'text', text: JSON.stringify(payload, null, 2) }]
+                };
             }
             try {
                 const result = await handler(args || {});
-                return result;
+                return {
+                    content: [{ type: 'text', text: JSON.stringify(result, null, 2) }]
+                };
             } catch (error) {
-                return formatErrorResponse(error.message, `Advanced Template Tool '${name}'`);
+                const payload = formatErrorResponse(error.message, `Advanced Template Tool '${name}'`);
+                return {
+                    content: [{ type: 'text', text: JSON.stringify(payload, null, 2) }]
+                };
             }
         });
     }
