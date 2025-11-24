@@ -6,6 +6,11 @@
 
 ## English
 
+### Prerequisites
+- **Adobe InDesign desktop** (2023–2025). On Windows the COM ProgIDs `InDesign.Application.2025/2024/...` are used; launch InDesign once so COM is registered.
+- **Node.js >= 18**.
+- **Windows (recommended)**. macOS is supported via AppleScript, but you may need to change the target app name in `src/core/scriptExecutor.js` if your InDesign version differs from `Adobe InDesign 2025`.
+
 ### Overview
 InDesign MCP Server turns Adobe InDesign into a Model Context Protocol (MCP) provider with more than 135 production-grade tools. It gives AI agents and automation scripts fine-grained control over documents, pages, styles, graphics, exports, and the new advanced template workflows that power architecture and presentation projects.
 
@@ -17,23 +22,27 @@ InDesign MCP Server turns Adobe InDesign into a Model Context Protocol (MCP) pro
 - **Session Intelligence:** Automatic page dimension tracking, smart placement defaults, and configurable overrides make agent workflows resilient.
 
 ### Quick Start
-1. **Install Dependencies**
+1. **Install dependencies (from the project root)**
    ```bash
+   cd indesign-mcp-server
    npm install
    ```
+   This pulls `winax` for Windows COM access; make sure you run it on Windows with InDesign installed.
 2. **Launch the classic server**
    ```bash
    npm run start
    ```
-   Or use the provided batch file on Windows to ensure InDesign launches with the correct working directory:
-   ```bat
-   start-indesign-mcp.bat
-   ```
-3. **Launch the advanced template server**
+   This starts `src/index.js`, which exposes 130+ atomic tools over MCP.
+3. **Launch the advanced template server (optional)**
    ```bash
    node src/advanced/index.js
    ```
-   Register both servers in your MCP client so the classic atomic tools and the advanced template orchestrator can run side-by-side.
+   The advanced server runs alongside the classic one and returns JSON payloads wrapped in MCP text responses for template orchestration.
+4. **Smoke check (optional)**
+   ```bash
+   node scripts/quick_check.mjs   # prints tool count
+   ```
+   Or use `temp-run.mjs` / `temp-send.mjs` to send sample MCP messages to the advanced server.
 
 ### MCP Client Configuration (example)
 ```json
@@ -78,6 +87,11 @@ If you run into issues, consult the handler-level docs in `indesign-mcp-server/d
 
 ## 中文
 
+### 前置条件
+- **Adobe InDesign 桌面版**（2023–2025）。在 Windows 通过 COM ProgID（如 `InDesign.Application.2025`）连接，首次安装后请先启动一次 InDesign 以完成注册。
+- **Node.js >= 18**。
+- **Windows（推荐）**。macOS 走 AppleScript，若版本号不同需在 `src/core/scriptExecutor.js` 中调整目标应用名（默认 `Adobe InDesign 2025`）。
+
 ### 概览
 InDesign MCP Server 将 Adobe InDesign 打造成一个 MCP 服务端，提供 135+ 项专业工具，实现从文档、页面到样式、图形、导出、图书管理的全链路自动化。新增的 `indesign-mcp-advanced` 模块可以让智能体按照母版脚本标签的说明，批量创建页面并填充模板槽位，尤其适合建筑方案汇报、品牌手册等需要高质量版式的场景。
 
@@ -89,20 +103,27 @@ InDesign MCP Server 将 Adobe InDesign 打造成一个 MCP 服务端，提供 13
 - **会话智能：** 自动记录页面尺寸、提供智能定位和 override 逻辑，让连续操作更可靠。
 
 ### 快速上手
-1. **安装依赖**
+1. **安装依赖（从项目根目录进入子目录）**
    ```bash
+   cd indesign-mcp-server
    npm install
    ```
+   需在已安装 InDesign 的 Windows 环境执行，以便正确安装 `winax`。
 2. **启动经典服务器**
    ```bash
    npm run start
    ```
-   Windows 用户可执行 `start-indesign-mcp.bat`，确保工作目录和 InDesign 实例正确匹配。
-3. **启动高级模板服务器**
+   对应 `src/index.js`，暴露 130+ 原子化工具。
+3. **启动高级模板服务器（可选）**
    ```bash
    node src/advanced/index.js
    ```
-   在 MCP 客户端中同时注册两个服务，让基础原子工具与高级模板流程协同工作。
+   高级服务器与经典服务并行运行，返回 JSON 文本响应以支持模板编排。
+4. **快速自检（可选）**
+   ```bash
+   node scripts/quick_check.mjs   # 输出工具总数
+   ```
+   也可使用 `temp-run.mjs` / `temp-send.mjs` 向高级服务器发送示例 MCP 消息。
 
 ### MCP 客户端配置示例
 ```json
