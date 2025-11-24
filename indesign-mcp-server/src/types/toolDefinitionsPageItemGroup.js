@@ -264,10 +264,10 @@ export const pageItemGroupToolDefinitions = [
                 pageIndex: {
                     type: 'integer',
                     description: 'Index of the page to list items from'
-                },
+                }
+            },
+            required: ['pageIndex'],
             additionalProperties: false
-        },
-            required: ['pageIndex']
         }
     },
 
@@ -281,10 +281,10 @@ export const pageItemGroupToolDefinitions = [
                 pageIndex: {
                     type: 'integer',
                     description: 'Index of the page where the group will be created'
-                },
+                }
+            },
+            required: ['pageIndex'],
             additionalProperties: false
-        },
-            required: ['pageIndex']
         }
     },
     {
@@ -398,10 +398,10 @@ export const pageItemGroupToolDefinitions = [
                 pageIndex: {
                     type: 'integer',
                     description: 'Index of the page to list groups from'
-                },
+                }
+            },
+            required: ['pageIndex'],
             additionalProperties: false
-        },
-            required: ['pageIndex']
         }
     },
     {
