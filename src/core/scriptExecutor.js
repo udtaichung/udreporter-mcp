@@ -1,169 +1,92 @@
 /**
- * Core script execution functionality (macOS AppleScript + Windows COM)
+ * Core script execution via Windows PowerShell + InDesign COM.
+ *
+ * Eliminates the upstream winax native addon (which would require Visual
+ * Studio C++ build tools to compile) by delegating COM attachment to a
+ * bundled PowerShell launcher. The macOS AppleScript branch has been
+ * removed; this fork targets Windows only (see package.json "os").
  */
 import { execFileSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
 import { fileURLToPath } from 'url';
-import { createRequire } from 'module';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export class ScriptExecutor {
-    // Cache a COM Application instance for Windows to avoid repeated activation
-    static _winApp = null;
+const RUN_JSX_PS1 = path.join(__dirname, 'run-jsx.ps1');
 
+export class ScriptExecutor {
     static isWindows() {
         return process.platform === 'win32';
     }
 
     /**
-     * Execute AppleScript command (macOS only)
-     * @param {string} script - The AppleScript to execute
-     * @returns {string} The result of the AppleScript execution
-     */
-    static async executeAppleScript(script) {
-        try {
-            const result = execFileSync('osascript', ['-e', script], { encoding: 'utf8' });
-            return result.trim();
-        } catch (error) {
-            throw new Error(`AppleScript execution failed: ${error.message}`);
-        }
-    }
-
-    /**
-     * Resolve a Windows COM InDesign.Application object via winax
-     * Tries multiple ProgIDs to maximize compatibility across versions.
-     */
-    static _getWindowsInDesignApp() {
-        if (!this.isWindows()) {
-            throw new Error('Windows COM is only available on Windows');
-        }
-        if (this._winApp) return this._winApp;
-
-        // Lazy-require winax to avoid issues on non-Windows platforms
-        const requireCjs = createRequire(import.meta.url);
-        let WinaxObject;
-        try {
-            const winax = requireCjs('winax');
-            // winax provides constructor as winax.Object and also sets global.ActiveXObject in CJS
-            WinaxObject = winax.Object || global.ActiveXObject;
-        } catch (e) {
-            throw new Error("Missing dependency 'winax'. Please run: npm install winax");
-        }
-
-        // Prefer explicit recent desktop ProgIDs, then generic, then older versions
-        const progIDs = [
-            // Newer/future first
-            'InDesign.Application.2026',
-            'InDesign.Application.CC.2026',
-            // Current
-            'InDesign.Application.2025',
-            'InDesign.Application.CC.2025',
-            // Generic
-            'InDesign.Application',
-            // Recent past
-            'InDesign.Application.2024',
-            'InDesign.Application.CC.2024',
-            'InDesign.Application.2023',
-            'InDesign.Application.CC.2023',
-            'InDesign.Application.2022',
-            'InDesign.Application.CC.2022',
-            // InDesign Server fallbacks (least preferred)
-            'InDesignServer.Application.2025',
-            'InDesignServer.Application.2024',
-            'InDesignServer.Application',
-        ];
-
-        let lastError;
-        for (const id of progIDs) {
-            try {
-                const app = new WinaxObject(id);
-                this._winApp = app;
-                return app;
-            } catch (err) {
-                lastError = err;
-            }
-        }
-        throw new Error(
-            `Could not create InDesign COM object. Tried: ${progIDs.join(', ')}. ` +
-            `Last error: ${lastError?.message || lastError}. ` +
-            `Tips: Ensure Adobe InDesign desktop is installed and has been launched at least once, ` +
-            `and that COM registration is available. If installation is fresh, try restarting or running once as administrator.`
-        );
-    }
-
-    /**
-     * Execute InDesign ExtendScript/JavaScript code
-     * - On Windows: Use COM DoScript via winax
-     * - On macOS: Use AppleScript to run the temp JSX file
-     * @param {string} script - The ExtendScript to execute
-     * @returns {string} The result of the script execution
+     * Execute an ExtendScript snippet inside Adobe InDesign.
+     *
+     * Flow:
+     *   1. Wrap caller's script with NEVER_INTERACT + try/catch (identical
+     *      wrapper to upstream to keep handler JSX byte-compatible).
+     *   2. Write wrapped JSX to a temp file (UTF-8).
+     *   3. Spawn `powershell -File run-jsx.ps1 -ScriptPath <tempfile>`.
+     *      The launcher attaches to InDesign via COM ROT, calls DoScript,
+     *      writes result to stdout.
+     *   4. Return stdout (trimmed).
+     *
+     * @param {string} script - Raw ExtendScript/JavaScript to execute.
+     * @returns {Promise<string>} Whatever DoScript returned (or empty).
      */
     static async executeInDesignScript(script) {
-        if (this.isWindows()) {
-            return await this._executeInDesignScriptWindows(script);
+        if (!this.isWindows()) {
+            throw new Error(
+                'udreporter-mcp is Windows-only. The upstream macOS AppleScript ' +
+                'branch was removed in this fork. See package.json "os": ["win32"].'
+            );
         }
-        // macOS path (AppleScript + temp JSX file)
-        let tempDir;
-        let tempScriptPath;
+
+        // Wrap to enforce non-interactive mode and capture thrown errors.
+        // Kept byte-identical to upstream so all 114+ handler JSX snippets
+        // continue to work without modification.
+        const wrapped = [
+            'try {',
+            '  app.scriptPreferences.userInteractionLevel = UserInteractionLevels.NEVER_INTERACT;',
+            script,
+            '} catch (e) {',
+            '  "Error: " + e.message;',
+            '}'
+        ].join('\n');
+
+        const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'udmcp-'));
+        const jsxPath = path.join(tempDir, 'script.jsx');
+        fs.writeFileSync(jsxPath, wrapped, { encoding: 'utf8' });
+
         try {
-            tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'indesign-mcp-'));
-            tempScriptPath = path.join(tempDir, 'script.jsx');
-
-            // Force non-interactive (headless) execution where possible
-            const wrapped = [
-                'try {',
-                '  app.scriptPreferences.userInteractionLevel = UserInteractionLevels.NEVER_INTERACT;',
-                script,
-                '} catch (e) {',
-                '  "Error: " + e.message;',
-                '}'
-            ].join('\n');
-            fs.writeFileSync(tempScriptPath, wrapped, { encoding: 'utf8' });
-
-            const escapedScriptPath = tempScriptPath.replace(/"/g, '\\"');
-            const appleScript = `
-        tell application "Adobe InDesign 2025"
-          do script POSIX file "${escapedScriptPath}" language javascript
-        end tell
-      `;
-
-            const result = await this.executeAppleScript(appleScript);
-
-            return result;
+            const result = execFileSync('powershell', [
+                '-NoProfile',
+                '-ExecutionPolicy', 'Bypass',
+                '-File', RUN_JSX_PS1,
+                '-ScriptPath', jsxPath,
+            ], {
+                encoding: 'utf8',
+                windowsHide: true,
+                // InDesign preflight / large exports can take a while.
+                // 10 minutes avoids hanging forever on a stuck modal while
+                // still allowing long-running operations.
+                timeout: 600_000,
+            });
+            return (result ?? '').trim();
         } catch (error) {
-            throw new Error(`Error executing tool (macOS): ${error.message}`);
+            const stderr = (error.stderr ?? '').toString().trim();
+            const stdout = (error.stdout ?? '').toString().trim();
+            const detail = stderr || stdout || error.message;
+            throw new Error(`PowerShell InDesign execution failed: ${detail}`);
         } finally {
-            if (tempDir) {
-                try { fs.rmSync(tempDir, { recursive: true, force: true }); } catch {}
+            try {
+                fs.rmSync(tempDir, { recursive: true, force: true });
+            } catch {
+                // swallow cleanup errors
             }
-        }
-    }
-
-    /**
-     * Windows: Execute via COM DoScript
-     */
-    static async _executeInDesignScriptWindows(script) {
-        try {
-            const app = this._getWindowsInDesignApp();
-            // Wrap to enforce non-interactive mode and basic error capture
-            const wrapped = [
-                'try {',
-                '  app.scriptPreferences.userInteractionLevel = UserInteractionLevels.NEVER_INTERACT;',
-                script,
-                '} catch (e) {',
-                '  "Error: " + e.message;',
-                '}'
-            ].join('\n');
-            // ScriptLanguage.JAVASCRIPT (numeric enum for COM environments)
-            const ScriptLanguage_JAVASCRIPT = 1246973031;
-            const result = app.DoScript(wrapped, ScriptLanguage_JAVASCRIPT);
-            return (result === undefined || result === null) ? '' : String(result);
-        } catch (error) {
-            throw new Error(`Windows COM execution failed: ${error.message}`);
         }
     }
 }
