@@ -49,6 +49,17 @@ export const exportToolDefinitions = [
         },
     },
     {
+        name: 'export_idml',
+        description: 'Export document to IDML (InDesign Markup Language interchange format). Unlike save_document (which writes binary .indd), this preserves the document as unpacked XML (ZIP archive) for version control, lossless interchange, and LLM-friendly workflows where XML is the editable format.',
+        inputSchema: {
+            type: 'object',
+            properties: {
+                filePath: { type: 'string', description: 'Output IDML file path' },
+            },
+            required: ['filePath'],
+        },
+    },
+    {
         name: 'package_document',
         description: 'Package document for printing',
         inputSchema: {

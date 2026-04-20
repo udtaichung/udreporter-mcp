@@ -205,4 +205,37 @@ export class ExportHandlers {
         const result = await ScriptExecutor.executeInDesignScript(script);
         return formatResponse(result, 'Export EPUB');
     }
+
+    /**
+     * Export document to IDML (InDesign Markup Language interchange format).
+     *
+     * IDML is an unpacked XML (ZIP archive) representation of the InDesign
+     * document, used for version control, round-tripping through external
+     * tools, and lossless interchange. Unlike `save_document` (which writes
+     * the proprietary `.indd` binary), this tool preserves the document as
+     * IDML for workflows that need the XML-editable form back.
+     */
+    static async exportIDML(args) {
+        const { filePath } = args;
+        const escapedFilePath = escapeFilePathForJsx(filePath);
+
+        const script = [
+            'if (app.documents.length === 0) {',
+            '  "No document open";',
+            '} else {',
+            '  var doc = app.activeDocument;',
+            '  var idmlFile = File("' + escapedFilePath + '");',
+            '  try {',
+            '    var folder = idmlFile.parent; if (folder && !folder.exists) { try { folder.create(); } catch(e) {} }',
+            '    doc.exportFile(ExportFormat.INDESIGN_MARKUP, idmlFile, false);',
+            `    "IDML exported successfully to: ${escapedFilePath}";`,
+            '  } catch (error) {',
+            '    "Error exporting IDML: " + error.message;',
+            '  }',
+            '}'
+        ].join('\n');
+
+        const result = await ScriptExecutor.executeInDesignScript(script);
+        return formatResponse(result, 'Export IDML');
+    }
 }

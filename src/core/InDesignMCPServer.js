@@ -170,6 +170,7 @@ export class InDesignMCPServer {
             case 'export_images': return await ExportHandlers.exportImages(args);
             case 'package_document': return await ExportHandlers.packageDocument(args);
             case 'export_epub': return await ExportHandlers.exportEPUB(args);
+            case 'export_idml': return await ExportHandlers.exportIDML(args);
 
             // Master Spread Management
             case 'create_master_spread': return await MasterSpreadHandlers.createMasterSpread(args);
