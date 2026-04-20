@@ -1,7 +1,7 @@
 {
-  "name": "indesign-mcp-server",
+  "name": "udreporter-mcp",
   "version": "1.1.0",
-  "description": "A comprehensive Model Context Protocol (MCP) server for Adobe InDesign automation with 50+ professional tools including document management, text/graphics creation, style management, and image scaling",
+  "description": "Windows-native InDesign MCP server for udreporter (都審報告書生成工具). Fork of zhanglongxiao111/windows-indesign-mcp with PowerShell COM bridge (no winax/C++ toolchain required).",
   "main": "src/index.js",
   "type": "module",
   "scripts": {
@@ -23,10 +23,21 @@
     "llm",
     "design-automation",
     "document-creation",
-    "layout-automation"
+    "layout-automation",
+    "udreporter",
+    "urban-design-review",
+    "powershell-com",
+    "windows"
   ],
-  "author": "lucdesign",
+  "author": "udtaichung (書格拉底)",
+  "contributors": [
+    "lucdesign (upstream author of indesign-mcp-server)",
+    "zhanglongxiao111 (Windows port + advanced templates)"
+  ],
   "license": "MIT",
+  "os": [
+    "win32"
+  ],
   "dependencies": {
     "@modelcontextprotocol/sdk": "^0.5.0",
     "winax": "^3.6.2"
@@ -36,10 +47,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lucdesign/indesign-mcp-server.git"
+    "url": "git+https://github.com/udtaichung/udreporter-mcp.git"
   },
   "bugs": {
-    "url": "https://github.com/lucdesign/indesign-mcp-server/issues"
+    "url": "https://github.com/udtaichung/udreporter-mcp/issues"
   },
-  "homepage": "https://github.com/lucdesign/indesign-mcp-server#readme"
+  "homepage": "https://github.com/udtaichung/udreporter-mcp#readme"
 }
